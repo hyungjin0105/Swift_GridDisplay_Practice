@@ -35,6 +35,7 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         setupCollectionView() // Initialize layout here
         setupRectangleBox()
         setupButtons()
+        configureButtonsVisibility()
         setupConstraints() // Use the layout property here
     }
 
@@ -53,6 +54,12 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         self.view.addSubview(collectionView)
     }
     
+    private func configureButtonsVisibility() {
+        let shouldShowButtons = columns % 2 == 0
+        twoColumn.isHidden = !shouldShowButtons
+        oneColumn.isHidden = !shouldShowButtons
+    }
+    
     private func setupButtons() {
         // Configure Button 1
         twoColumn.setTitle("Two column", for: .normal)
@@ -63,8 +70,22 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         oneColumn.setTitle("One Column", for: .normal)
         oneColumn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(oneColumn)
+        
+        twoColumn.addTarget(self, action: #selector(twoColumnLayout), for: .touchUpInside)
+           oneColumn.addTarget(self, action: #selector(oneColumnLayout), for: .touchUpInside)
 
     }
+    @objc private func twoColumnLayout() {
+        layout.useAlternatingLayoutForEven = true
+        collectionView.reloadData()
+    }
+
+    @objc private func oneColumnLayout() {
+        layout.useAlternatingLayoutForEven = false
+        collectionView.reloadData()
+    }
+  
+
 
     private func setupRectangleBox() {
         rectangleBox.backgroundColor = .red
@@ -106,9 +127,12 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func updateCollectionViewLayout(forColumns newColumns: Int) {
         self.columns = newColumns
-        layout.updateColumnCount(newColumnCount: newColumns) // Directly use the layout property
+        layout.columns = newColumns
+        layout.updateColumnCount(newColumnCount: newColumns) // Update the layout
+        configureButtonsVisibility() // Update button visibility
         collectionView.reloadData()
     }
+
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return boxes.count // Adjusted to new grid size

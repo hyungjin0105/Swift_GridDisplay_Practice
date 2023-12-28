@@ -2,6 +2,7 @@ import UIKit
 
 class CustomGridLayout: UICollectionViewFlowLayout {
     var columns: Int
+    var useAlternatingLayoutForEven: Bool = true
 
     init(columns: Int) {
         self.columns = columns
@@ -16,8 +17,8 @@ class CustomGridLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)?.map { $0.copy() as! UICollectionViewLayoutAttributes }
 
-        if columns % 2 == 0 {
-            // Adjust spacing for even columns
+        if columns % 2 == 0 && useAlternatingLayoutForEven {
+            // Adjust spacing for even columns using the alternating logic
             var xOffset: CGFloat = 0
             var previousRow: Int = 0
 
@@ -35,10 +36,19 @@ class CustomGridLayout: UICollectionViewFlowLayout {
                 // Increment xOffset based on columnIndex
                 xOffset += itemSize.width + (columnIndex % 2 == 0 ? 1 : itemSize.width / 2.0)
             }
+        } else {
+            // Apply a uniform layout, similar to the logic for odd columns
+            let spacing = (columns % 2 == 0) ? minimumInteritemSpacing : (itemSize.width / 2.0)
+            attributes?.forEach { layoutAttribute in
+                let indexPath = layoutAttribute.indexPath
+                let columnIndex = indexPath.item % columns
+                layoutAttribute.frame.origin.x = CGFloat(columnIndex) * (itemSize.width + spacing)
+            }
         }
 
         return attributes
     }
+
 
     
     private func setupLayout() {
@@ -48,13 +58,12 @@ class CustomGridLayout: UICollectionViewFlowLayout {
             self.minimumLineSpacing = 2
         } else {
             // Odd number of columns
-            let baseSpacing = 5
-            let spacingIncrement = 10
-            let columnDifference = max(0, 8 - columns)
-            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-            self.minimumLineSpacing = 2
-        }
-    }
+          let baseSpacing = 5
+          let spacingIncrement = 10
+          let columnDifference = max(0, 8 - columns)
+          self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+          self.minimumLineSpacing = 2
+      }    }
 
 
 
