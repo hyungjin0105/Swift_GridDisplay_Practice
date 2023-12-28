@@ -9,7 +9,7 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     private var boxes: [Bool]
     let rectangleBox = UIView()
 
-    private let cellSize: CGSize = CGSize(width: 40, height: 40) 
+    private let cellSize: CGSize = CGSize(width: 40, height: 40)
     
     private var layout: UICollectionViewFlowLayout!
 
@@ -38,23 +38,22 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     }
 
     private func setupCollectionView() {
-        let customLayout = CustomFlowLayout()
-        customLayout.numberOfColumns = self.columns
-
+        layout = UICollectionViewFlowLayout()
+        
         if columns % 2 == 0 {
-            // Even number of columns - alternate spacing logic
-            customLayout.minimumInteritemSpacing = 1 // Minimal spacing for paired columns
-            customLayout.minimumLineSpacing = 10 // Larger spacing between pairs
+            // Even number of columns - pair columns with minimal space between them
+            layout.minimumInteritemSpacing = 1 // Minimal spacing for paired columns
+            layout.minimumLineSpacing = 10 // Larger spacing between pairs
         } else {
             // Odd number of columns - use standard spacing logic
             let baseSpacing = 5 // Base spacing for 8 columns
             let spacingIncrement = 10 // Increment spacing by 10 for each column less than 8
             let columnDifference = max(0, 8 - columns)
-            customLayout.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-            customLayout.minimumLineSpacing = 2
+            layout.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+            layout.minimumLineSpacing = 2
         }
-
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: customLayout)
+        
+        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
@@ -64,7 +63,6 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
 
         self.view.addSubview(collectionView)
     }
-
     
     private func setupButtons() {
         // Configure Button 1
@@ -87,11 +85,10 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.bottomAnchor.constraint(equalTo: rectangleBox.topAnchor, constant: -20),
+            collectionView.bottomAnchor.constraint(equalTo: rectangleBox.topAnchor, constant: -20),// Positioned below the rectangle box
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            // Adjust the width constraint - either remove it or use safe unwrapping
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            collectionView.widthAnchor.constraint(equalToConstant: (CGFloat(columns) * cellSize.width) + CGFloat(columns - 1) * layout.minimumInteritemSpacing),
+           collectionView.heightAnchor.constraint(equalToConstant: (CGFloat(rows) * cellSize.height) + CGFloat(rows - 1) * layout.minimumLineSpacing),
 
             
             rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (4.0 / 7.0)),
@@ -111,24 +108,9 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func updateCollectionViewLayout(forColumns newColumns: Int) {
         self.columns = newColumns
-        if let customLayout = collectionView.collectionViewLayout as? CustomFlowLayout {
-            customLayout.numberOfColumns = newColumns
-            // Adjust the spacing logic based on even or odd number of columns
-            if newColumns % 2 == 0 {
-                customLayout.minimumInteritemSpacing = 1
-                customLayout.minimumLineSpacing = 10
-            } else {
-                let baseSpacing = 5
-                let spacingIncrement = 10
-                let columnDifference = max(0, 8 - newColumns)
-                customLayout.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-                customLayout.minimumLineSpacing = 2
-            }
-            customLayout.invalidateLayout()
-        }
-        collectionView.reloadData()
+        setupCollectionView() // Recalculate the layout
+        collectionView.reloadData() // Reload the collection view to apply new layout
     }
-
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return boxes.count // Adjusted to new grid size
