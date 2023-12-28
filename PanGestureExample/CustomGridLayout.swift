@@ -19,7 +19,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
         if columns % 2 == 0 {
             // Adjust spacing for even columns
             var xOffset: CGFloat = 0
-            var previousRow: Int = 0 // Start with an invalid row number
+            var previousRow: Int = 0
 
             attributes?.forEach { layoutAttribute in
                 let indexPath = layoutAttribute.indexPath
@@ -33,7 +33,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
 
                 layoutAttribute.frame.origin.x = xOffset
                 // Increment xOffset based on columnIndex
-                xOffset += itemSize.width + (columnIndex % 2 == 0 ? 10 : 1)
+                xOffset += itemSize.width + (columnIndex % 2 == 0 ? 1 : itemSize.width / 2.0)
             }
         }
 
@@ -45,15 +45,16 @@ class CustomGridLayout: UICollectionViewFlowLayout {
         if columns % 2 == 0 {
             // Even columns: standard item size, alternating spacing
             self.itemSize = CGSize(width: 40, height: 40) // Standard size
-            self.minimumLineSpacing = 10
+            self.minimumLineSpacing = 2
         } else {
             // Odd number of columns
-          let baseSpacing = 5
-          let spacingIncrement = 10
-          let columnDifference = max(0, 8 - columns)
-          self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-          self.minimumLineSpacing = 2
-      }    }
+            let baseSpacing = 5
+            let spacingIncrement = 10
+            let columnDifference = max(0, 8 - columns)
+            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+            self.minimumLineSpacing = 2
+        }
+    }
 
 
 

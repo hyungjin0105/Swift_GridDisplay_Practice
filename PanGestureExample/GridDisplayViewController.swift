@@ -76,7 +76,7 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         let averageSpacing: CGFloat
         if columns % 2 == 0 {
             // For even columns, average the spacing (1 and 10)
-            averageSpacing = (1 + 10) / 2.0
+            averageSpacing = (1 + cellSize.width / 2.0) / 2.0
         } else {
             // For odd columns, use the standard minimumInteritemSpacing
             averageSpacing = layout.minimumInteritemSpacing
