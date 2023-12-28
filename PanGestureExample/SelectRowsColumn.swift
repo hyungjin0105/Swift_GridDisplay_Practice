@@ -237,3 +237,4 @@ class SelectRowsColumn: UIViewController, UICollectionViewDelegate, UICollection
         selectionLabel.text = "Selected Rows: \(selectedRow), Selected Columns: \(selectedColumn)"
     }
 }
+

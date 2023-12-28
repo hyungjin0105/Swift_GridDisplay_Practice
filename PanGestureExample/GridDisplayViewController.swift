@@ -4,11 +4,17 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     var rows: Int
     var columns: Int
+    
     private var collectionView: UICollectionView!
     private var boxes: [Bool]
     let rectangleBox = UIView()
 
-    private let cellSize: CGSize = CGSize(width: 40, height: 40) // Adjust the size as needed
+    private let cellSize: CGSize = CGSize(width: 40, height: 40) 
+    
+    private var layout: UICollectionViewFlowLayout!
+
+    private let twoColumn = UIButton(type: .system)
+    private let oneColumn = UIButton(type: .system)
 
     // Custom initializer
     init(rows: Int, columns: Int) {
@@ -27,14 +33,26 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         self.view.backgroundColor = .systemBackground
         setupCollectionView()
         setupRectangleBox()
+        setupButtons()
         setupConstraints()
     }
 
     private func setupCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 2
-        layout.minimumInteritemSpacing = 2
-
+        layout = UICollectionViewFlowLayout()
+        
+        if columns % 2 == 0 {
+            // Even number of columns - pair columns with minimal space between them
+            layout.minimumInteritemSpacing = 1 // Minimal spacing for paired columns
+            layout.minimumLineSpacing = 10 // Larger spacing between pairs
+        } else {
+            // Odd number of columns - use standard spacing logic
+            let baseSpacing = 5 // Base spacing for 8 columns
+            let spacingIncrement = 10 // Increment spacing by 10 for each column less than 8
+            let columnDifference = max(0, 8 - columns)
+            layout.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+            layout.minimumLineSpacing = 2
+        }
+        
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -44,6 +62,19 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         self.view.addSubview(collectionView)
+    }
+    
+    private func setupButtons() {
+        // Configure Button 1
+        twoColumn.setTitle("Two column", for: .normal)
+        twoColumn.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(twoColumn)
+
+        // Configure Button 2
+        oneColumn.setTitle("One Column", for: .normal)
+        oneColumn.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(oneColumn)
+
     }
 
     private func setupRectangleBox() {
@@ -56,18 +87,31 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         NSLayoutConstraint.activate([
             collectionView.bottomAnchor.constraint(equalTo: rectangleBox.topAnchor, constant: -20),// Positioned below the rectangle box
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            collectionView.widthAnchor.constraint(equalToConstant: (CGFloat(columns) * cellSize.height)+CGFloat(columns-1)*2), // Width based on the number of columns
-            collectionView.heightAnchor.constraint(equalToConstant: (CGFloat(rows) * cellSize.height)+CGFloat(rows-1)*2), // Height based on the number of rows
+            collectionView.widthAnchor.constraint(equalToConstant: (CGFloat(columns) * cellSize.width) + CGFloat(columns - 1) * layout.minimumInteritemSpacing),
+           collectionView.heightAnchor.constraint(equalToConstant: (CGFloat(rows) * cellSize.height) + CGFloat(rows - 1) * layout.minimumLineSpacing),
+
             
-            //선생님 박스. 위치가 화면에 고정되어 있어 디바이스마다 다를수도..
             rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (4.0 / 7.0)),
             rectangleBox.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            rectangleBox.widthAnchor.constraint(equalToConstant: 100), // Set the width as needed
-            rectangleBox.heightAnchor.constraint(equalToConstant: 30)  // Set the height as needed
+            rectangleBox.widthAnchor.constraint(equalToConstant: 100),
+            rectangleBox.heightAnchor.constraint(equalToConstant: 30),
+            
+            twoColumn.topAnchor.constraint(equalTo: rectangleBox.bottomAnchor, constant: 20),
+            twoColumn.leadingAnchor.constraint(equalTo: rectangleBox.leadingAnchor),
+
+            // Button 2 Constraints
+            oneColumn.topAnchor.constraint(equalTo: twoColumn.topAnchor),
+            oneColumn.leadingAnchor.constraint(equalTo: twoColumn.trailingAnchor, constant: 10),
+            oneColumn.widthAnchor.constraint(equalTo: twoColumn.widthAnchor),
         ])
     }
     
-    
+    func updateCollectionViewLayout(forColumns newColumns: Int) {
+        self.columns = newColumns
+        setupCollectionView() // Recalculate the layout
+        collectionView.reloadData() // Reload the collection view to apply new layout
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return boxes.count // Adjusted to new grid size
     }
@@ -81,5 +125,6 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
     }
+    
 
 }
