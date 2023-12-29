@@ -12,7 +12,7 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     private var boxes: [Bool]
     let rectangleBox = UIView()
 
-    private let cellSize: CGSize = CGSize(width: 40, height: 40)
+    private let cellSize: CGSize = CGSize(width: 40, height: 30)
     
     private let twoColumn = UIButton(type: .system)
     private let oneColumn = UIButton(type: .system)
@@ -110,7 +110,7 @@ class GridDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
 
             collectionView.heightAnchor.constraint(equalToConstant: (CGFloat(rows) * cellSize.height) + CGFloat(rows - 1) * layout.minimumLineSpacing),
 
-            rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (4.0 / 7.0)),
+            rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (3.5 / 7.0)),
             rectangleBox.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             rectangleBox.widthAnchor.constraint(equalToConstant: 100),
             rectangleBox.heightAnchor.constraint(equalToConstant: 30),

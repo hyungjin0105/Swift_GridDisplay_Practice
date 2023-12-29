@@ -96,8 +96,8 @@ class SelectRowsColumn: UIViewController, UICollectionViewDelegate, UICollection
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
             collectionView.heightAnchor.constraint(equalToConstant: collectionViewHeight),
 
             rowPicker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -121,7 +121,7 @@ class SelectRowsColumn: UIViewController, UICollectionViewDelegate, UICollection
             confirmButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             
             //선생님 박스. 위치가 화면에 고정되어 있어 디바이스마다 다를수도..
-            rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (4.0 / 7.0)),
+            rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (3.5 / 7.0)),
             rectangleBox.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             rectangleBox.widthAnchor.constraint(equalToConstant: 100), // Set the width as needed
             rectangleBox.heightAnchor.constraint(equalToConstant: 30)  // Set the height as needed

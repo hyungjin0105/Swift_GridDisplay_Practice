@@ -53,7 +53,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
     private func setupLayout() {
         if columns % 2 == 0 {
             // Even columns: standard item size, alternating spacing
-            self.itemSize = CGSize(width: 40, height: 40) // Standard size
+            self.itemSize = CGSize(width: 40, height: 25) // Standard size
             self.minimumLineSpacing = 2
         } else {
             // Odd number of columns
