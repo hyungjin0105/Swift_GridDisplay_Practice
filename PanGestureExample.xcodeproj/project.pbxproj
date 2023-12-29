@@ -16,6 +16,7 @@
 		CA505F292B3A8FB200E1D140 /* PanGestureExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA505F282B3A8FB200E1D140 /* PanGestureExampleUITestsLaunchTests.swift */; };
 		CA505F362B3AB91200E1D140 /* GridDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */; };
 		CA505F3C2B3D31DC00E1D140 /* CustomGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */; };
+		CA665C932B3EB57600F4FD26 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA665C922B3EB57600F4FD26 /* GridViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		CA505F282B3A8FB200E1D140 /* PanGestureExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanGestureExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDisplayViewController.swift; sourceTree = "<group>"; };
 		CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGridLayout.swift; sourceTree = "<group>"; };
+		CA665C922B3EB57600F4FD26 /* GridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				CA505F092B3A8FB000E1D140 /* SelectRowsColumn.swift */,
 				CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */,
 				CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */,
+				CA665C922B3EB57600F4FD26 /* GridViewController.swift */,
 				CA505F0E2B3A8FB200E1D140 /* Assets.xcassets */,
 				CA505F132B3A8FB200E1D140 /* Info.plist */,
 			);
@@ -258,6 +261,7 @@
 			files = (
 				CA505F0A2B3A8FB000E1D140 /* SelectRowsColumn.swift in Sources */,
 				CA505F3C2B3D31DC00E1D140 /* CustomGridLayout.swift in Sources */,
+				CA665C932B3EB57600F4FD26 /* GridViewController.swift in Sources */,
 				CA505F062B3A8FB000E1D140 /* AppDelegate.swift in Sources */,
 				CA505F362B3AB91200E1D140 /* GridDisplayViewController.swift in Sources */,
 				CA505F082B3A8FB000E1D140 /* SceneDelegate.swift in Sources */,
