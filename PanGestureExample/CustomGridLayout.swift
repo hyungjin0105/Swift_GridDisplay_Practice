@@ -37,13 +37,12 @@ class CustomGridLayout: UICollectionViewFlowLayout {
                 xOffset += itemSize.width + (columnIndex % 2 == 0 ? 1 : itemSize.width / 2.0)
             }
         } else {
-            // Apply a uniform layout, similar to the logic for odd columns
-            let spacing = (columns % 2 == 0) ? minimumInteritemSpacing : (itemSize.width / 2.0)
-            attributes?.forEach { layoutAttribute in
-                let indexPath = layoutAttribute.indexPath
-                let columnIndex = indexPath.item % columns
-                layoutAttribute.frame.origin.x = CGFloat(columnIndex) * (itemSize.width + spacing)
-            }
+            // Odd number of columns
+              let baseSpacing = 5
+              let spacingIncrement = 10
+              let columnDifference = max(0, 8 - columns)
+              self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+              self.minimumLineSpacing = 2
         }
 
         return attributes
