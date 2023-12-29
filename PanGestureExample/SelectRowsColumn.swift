@@ -155,7 +155,7 @@ class SelectRowsColumn: UIViewController, UICollectionViewDelegate, UICollection
         let selectedColumn = columnPicker.selectedRow(inComponent: 0) + 1
 
         // Create gridDisplayVC using the custom initializer
-        let gridDisplayVC = GridViewController(rows: selectedRow, columns: selectedColumn)
+        let gridDisplayVC = GridDisplayViewController(rows: selectedRow, columns: selectedColumn)
 
         // If using a navigation controller
         navigationController?.pushViewController(gridDisplayVC, animated: true)
