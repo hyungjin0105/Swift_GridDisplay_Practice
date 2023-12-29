@@ -41,7 +41,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
               let baseSpacing = 5
               let spacingIncrement = 10
               let columnDifference = max(0, 8 - columns)
-              self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
               self.minimumLineSpacing = 2
         }
 
@@ -53,14 +53,17 @@ class CustomGridLayout: UICollectionViewFlowLayout {
     private func setupLayout() {
         if columns % 2 == 0 {
             // Even columns: standard item size, alternating spacing
-            self.itemSize = CGSize(width: 40, height: 25) // Standard size
+            let baseSpacing = 5
+            let spacingIncrement = 10
+            let columnDifference = max(0, 8 - columns)
+              self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
             self.minimumLineSpacing = 2
         } else {
             // Odd number of columns
           let baseSpacing = 5
           let spacingIncrement = 10
           let columnDifference = max(0, 8 - columns)
-          self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
           self.minimumLineSpacing = 2
       }    }
 

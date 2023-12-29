@@ -16,9 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = SelectRowsColumn()
         window?.makeKeyAndVisible()
         
-        #if DEBUG
-                Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
-        #endif
                 
         return true
     }
