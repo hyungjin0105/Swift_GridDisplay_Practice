@@ -1,76 +1,112 @@
 import UIKit
 
 class CustomGridLayout: UICollectionViewFlowLayout {
-    var columns: Int
-    var useAlternatingLayoutForEven: Bool = true
+    var gridColumns: Int
+    var cellSize: CGFloat = 30
+    var baseHeight: CGFloat = 2
+    var useAlternatingSpacing: Bool = false
+    var baseSpacing: CGFloat // Declare baseSpacing here
 
     init(columns: Int) {
-        self.columns = columns
+        self.gridColumns = columns
+        self.baseSpacing = 15 + ((8 - CGFloat(gridColumns)) * 10)
         super.init()
-        self.setupLayout()
+        setupLayout()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    private func setupLayout() {
+        let spacenum = CGFloat(gridColumns) - 1
+        let totalCellWidth = (cellSize * CGFloat(gridColumns)) + (baseSpacing * spacenum)
+        let dynamicSpacing = calculateDynamicSpacingOdd(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize)
+
+        self.minimumInteritemSpacing = dynamicSpacing
+        self.minimumLineSpacing = baseHeight
+        self.itemSize = CGSize(width: cellSize, height: cellSize)
+    }
+    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)?.map { $0.copy() as! UICollectionViewLayoutAttributes }
-
-        if columns % 2 == 0 && useAlternatingLayoutForEven {
-            // Adjust spacing for even columns using the alternating logic
-            var xOffset: CGFloat = 0
-            var previousRow: Int = 0
-
-            attributes?.forEach { layoutAttribute in
-                let indexPath = layoutAttribute.indexPath
-                let columnIndex = indexPath.item % columns
-                let rowIndex = indexPath.item / columns
-
-                if rowIndex != previousRow {
-                    xOffset = 0 // Reset xOffset for each new row
-                    previousRow = rowIndex
+        
+        let totalCellWidth = (cellSize * CGFloat(gridColumns) + (self.baseSpacing * CGFloat(gridColumns) - 1))
+        // Calculate dynamic spacing based on the current state of the collection view
+        let dynamicSpacingEven = calculateDynamicSpacingEven(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize)
+        
+            if gridColumns % 2 == 0 && useAlternatingSpacing {
+                var xOffset: CGFloat = 0
+                var previousRow: Int = 0
+                
+                // Define spacing constants
+                let smallSpace: CGFloat = 2  // smaller space between cells
+                let largeSpace: CGFloat = dynamicSpacingEven // larger space between cells
+                
+                attributes?.forEach { layoutAttribute in
+                    let indexPath = layoutAttribute.indexPath
+                    let columnIndex = indexPath.item % gridColumns
+                    let rowIndex = indexPath.item / gridColumns
+                    
+                    if rowIndex != previousRow {
+                        xOffset = 0 // Reset xOffset for each new row
+                        previousRow = rowIndex
+                    }
+                    
+                    layoutAttribute.frame.origin.x = xOffset
+                    
+                    // Alternating space logic
+                    if columnIndex % 2 == 0 {
+                        xOffset += itemSize.width + smallSpace
+                    } else {
+                        xOffset += itemSize.width + largeSpace
+                    }
                 }
-
-                layoutAttribute.frame.origin.x = xOffset
-                // Increment xOffset based on columnIndex
-                xOffset += itemSize.width + (columnIndex % 2 == 0 ? 1 : itemSize.width / 2.0)
+            } else {
+                // Odd number of columns
+                let baseSpacing = 5
+                let spacingIncrement = 10
+                let columnDifference = max(0, 8 - gridColumns)
+                self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
+                self.minimumLineSpacing = 2
             }
-        } else {
-            // Odd number of columns
-              let baseSpacing = 5
-              let spacingIncrement = 10
-              let columnDifference = max(0, 8 - columns)
-            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-              self.minimumLineSpacing = 2
+            
+            return attributes
         }
-
-        return attributes
-    }
-
-
+        
     
-    private func setupLayout() {
-        if columns % 2 == 0 {
-            // Even columns: standard item size, alternating spacing
-            let baseSpacing = 5
-            let spacingIncrement = 10
-            let columnDifference = max(0, 8 - columns)
-              self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-            self.minimumLineSpacing = 2
-        } else {
-            // Odd number of columns
-          let baseSpacing = 5
-          let spacingIncrement = 10
-          let columnDifference = max(0, 8 - columns)
-            self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
-          self.minimumLineSpacing = 2
-      }    }
 
 
 
-    func updateColumnCount(newColumnCount: Int) {
-        self.columns = newColumnCount
-        self.setupLayout()
+    func calculateDynamicSpacingOdd(totalWidth: CGFloat, columns: Int, cellsize: CGFloat) -> CGFloat {
+        guard columns > 1 else {
+            return 0
+        }
+        
+        let totalSpacing = totalWidth - (cellsize * CGFloat(columns))
+        return totalSpacing / CGFloat(columns - 1)
+    }
+    
+    func calculateDynamicSpacingEven(totalWidth: CGFloat, columns: Int, cellsize: CGFloat) -> CGFloat {
+        guard columns > 2 else {
+            return 0 // Return 0 for single column
+        }
+        
+        // Calculate the number of larger gaps
+        let numberOfLargerGaps = CGFloat(columns / 2) - 1
+        
+        // Calculate the total width taken by cells
+        let totalCellWidth = cellsize * CGFloat(columns)
+        
+        // Calculate the total width taken by smaller gaps (fixed at 2 points each)
+        let totalSmallSpacing = (CGFloat(columns - 1) - numberOfLargerGaps) * 2
+        
+        // Calculate the remaining width available for larger gaps
+        let remainingWidthForLargeSpacing = totalWidth - totalCellWidth - totalSmallSpacing
+        
+        // Divide the remaining width by the number of larger gaps to find the spacing for larger gaps
+        return remainingWidthForLargeSpacing / numberOfLargerGaps
     }
 }
+
+

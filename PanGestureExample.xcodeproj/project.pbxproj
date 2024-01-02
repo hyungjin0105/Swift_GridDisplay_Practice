@@ -17,6 +17,7 @@
 		CA505F362B3AB91200E1D140 /* GridDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */; };
 		CA505F3C2B3D31DC00E1D140 /* CustomGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */; };
 		CA665C932B3EB57600F4FD26 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA665C922B3EB57600F4FD26 /* GridViewController.swift */; };
+		CA665C9E2B430F0100F4FD26 /* CustomGridLayout2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA665C9D2B430F0100F4FD26 /* CustomGridLayout2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDisplayViewController.swift; sourceTree = "<group>"; };
 		CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGridLayout.swift; sourceTree = "<group>"; };
 		CA665C922B3EB57600F4FD26 /* GridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
+		CA665C9D2B430F0100F4FD26 /* CustomGridLayout2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGridLayout2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				CA505F072B3A8FB000E1D140 /* SceneDelegate.swift */,
 				CA505F092B3A8FB000E1D140 /* SelectRowsColumn.swift */,
 				CA505F352B3AB91100E1D140 /* GridDisplayViewController.swift */,
+				CA665C9D2B430F0100F4FD26 /* CustomGridLayout2.swift */,
 				CA505F3B2B3D31DC00E1D140 /* CustomGridLayout.swift */,
 				CA665C922B3EB57600F4FD26 /* GridViewController.swift */,
 				CA505F0E2B3A8FB200E1D140 /* Assets.xcassets */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA665C9E2B430F0100F4FD26 /* CustomGridLayout2.swift in Sources */,
 				CA505F0A2B3A8FB000E1D140 /* SelectRowsColumn.swift in Sources */,
 				CA505F3C2B3D31DC00E1D140 /* CustomGridLayout.swift in Sources */,
 				CA665C932B3EB57600F4FD26 /* GridViewController.swift in Sources */,
