@@ -86,23 +86,23 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .white
         view.addSubview(collectionView)
     
     }
     
     
     private func setupConstraints() {
+        guard let layout = collectionView.collectionViewLayout as? CustomGridLayout else {
+            return
+        }
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        let cellSize: CGFloat = 30
-        let basespacing: CGFloat = 15 + ((8 - CGFloat(gridColumns)) * 10)
-        let baseheight: CGFloat = 2
-        let spacenum = CGFloat(gridColumns) - 1
-        //        let totalCellWidth = (cellSize * 8) + ((cellSize/2) * 7)
-        let totalCellWidth = (cellSize * CGFloat(gridColumns) + (basespacing * spacenum))
-        let totalCellHeight = (cellSize * CGFloat(gridRows)) + (baseheight * CGFloat(gridRows - 1))
-        
+        // Use properties from CustomGridLayout for totalCellWidth and totalCellHeight
+        let spacenum = CGFloat(layout.gridColumns) - 1
+        let totalCellWidth = (layout.cellSize * CGFloat(layout.gridColumns)) + (layout.baseSpacing * spacenum)
+        let totalCellHeight = (layout.cellSize * CGFloat(gridRows)) + (layout.baseHeight * CGFloat(gridRows - 1))
         
         NSLayoutConstraint.activate([
             rectangleBox.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * (3.5 / 7.0)),
@@ -116,7 +116,7 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
             collectionView.bottomAnchor.constraint(equalTo: rectangleBox.topAnchor, constant: -20)
         ])
         
-        if gridColumns % 2 == 0 {
+        if layout.gridColumns % 2 == 0 {
             // Set up constraints for the buttons only if they are added to the view
             NSLayoutConstraint.activate([
                 buttonOne.topAnchor.constraint(equalTo: rectangleBox.bottomAnchor, constant: 20),
@@ -141,8 +141,4 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return cell
     }
     
-    // UICollectionViewDelegateFlowLayout methods
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 30, height: 30)
-    }
 }
