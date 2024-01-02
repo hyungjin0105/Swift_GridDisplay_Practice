@@ -60,7 +60,7 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc private func adjustSpacingForOneButton() {
         if let layout = collectionView.collectionViewLayout as? CustomGridLayout {
-            layout.minimumInteritemSpacing = layout.calculateDynamicSpacingOdd(totalWidth: collectionView.bounds.width, columns: gridColumns, cellsize: 30)
+            layout.useAlternatingSpacing = false
             collectionView.collectionViewLayout.invalidateLayout()
         }
     }
@@ -68,8 +68,7 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @objc private func adjustSpacingForTwoButton() {
         if let layout = collectionView.collectionViewLayout as? CustomGridLayout {
             // Toggle alternating spacing
-            layout.useAlternatingSpacing = !layout.useAlternatingSpacing
-
+            layout.useAlternatingSpacing = true
             // Invalidate the layout to apply changes
             collectionView.collectionViewLayout.invalidateLayout()
         }
@@ -87,7 +86,7 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .black
         view.addSubview(collectionView)
     
     }
@@ -128,37 +127,6 @@ class GridViewController: UIViewController, UICollectionViewDelegate, UICollecti
             ])
         }
     }
-    
-//    private func calculateDynamicSpacingOdd(totalWidth: CGFloat, columns: Int, cellsize: CGFloat) -> CGFloat {
-//        guard columns > 1 else {
-//            return 0
-//        }
-//        
-//        let totalSpacing = totalWidth - (cellsize * CGFloat(columns))
-//        return totalSpacing / CGFloat(columns - 1)
-//    }
-//    
-//    private func calculateDynamicSpacingEven(totalWidth: CGFloat, columns: Int, cellsize: CGFloat) -> CGFloat {
-//        guard columns > 2 else {
-//            return 0 // Return 0 for single column
-//        }
-//        
-//        // Calculate the number of larger gaps
-//        let numberOfLargerGaps = CGFloat(columns / 2) - 1
-//        
-//        // Calculate the total width taken by cells
-//        let totalCellWidth = cellsize * CGFloat(columns)
-//        
-//        // Calculate the total width taken by smaller gaps (fixed at 2 points each)
-//        let totalSmallSpacing = (CGFloat(columns - 1) - numberOfLargerGaps) * 2
-//        
-//        // Calculate the remaining width available for larger gaps
-//        let remainingWidthForLargeSpacing = totalWidth - totalCellWidth - totalSmallSpacing
-//        
-//        // Divide the remaining width by the number of larger gaps to find the spacing for larger gaps
-//        return remainingWidthForLargeSpacing / numberOfLargerGaps
-//    }
-//    
     
     // UICollectionViewDataSource methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -1,6 +1,7 @@
 import UIKit
 
 class CustomGridLayout: UICollectionViewFlowLayout {
+            
     var gridColumns: Int
     var cellSize: CGFloat = 30
     var baseHeight: CGFloat = 2
@@ -31,7 +32,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)?.map { $0.copy() as! UICollectionViewLayoutAttributes }
         
-        let totalCellWidth = (cellSize * CGFloat(gridColumns) + (self.baseSpacing * CGFloat(gridColumns) - 1))
+        let totalCellWidth = (cellSize * CGFloat(gridColumns)) + (baseSpacing * (CGFloat(gridColumns) - 1))
         // Calculate dynamic spacing based on the current state of the collection view
         let dynamicSpacingEven = calculateDynamicSpacingEven(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize)
         
@@ -40,9 +41,10 @@ class CustomGridLayout: UICollectionViewFlowLayout {
                 var previousRow: Int = 0
                 
                 // Define spacing constants
-                let smallSpace: CGFloat = 2  // smaller space between cells
+                let smallSpace: CGFloat = 6  // smaller space between cells
                 let largeSpace: CGFloat = dynamicSpacingEven // larger space between cells
-                
+//                let largeSpace: CGFloat = 70 // larger space between cells
+
                 attributes?.forEach { layoutAttribute in
                     let indexPath = layoutAttribute.indexPath
                     let columnIndex = indexPath.item % gridColumns
@@ -64,7 +66,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
                 }
             } else {
                 // Odd number of columns
-                let baseSpacing = 5
+                let baseSpacing = 15
                 let spacingIncrement = 10
                 let columnDifference = max(0, 8 - gridColumns)
                 self.minimumInteritemSpacing = CGFloat(baseSpacing + spacingIncrement * columnDifference)
@@ -105,7 +107,7 @@ class CustomGridLayout: UICollectionViewFlowLayout {
         let remainingWidthForLargeSpacing = totalWidth - totalCellWidth - totalSmallSpacing
         
         // Divide the remaining width by the number of larger gaps to find the spacing for larger gaps
-        return remainingWidthForLargeSpacing / numberOfLargerGaps
+        return (remainingWidthForLargeSpacing / numberOfLargerGaps) - 6
     }
 }
 
