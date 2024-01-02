@@ -3,16 +3,16 @@ import UIKit
 class CustomGridLayout: UICollectionViewFlowLayout {
             
     var gridColumns: Int
-    var cellSize: CGFloat
+    var cellSize: CGSize
     var baseHeight: CGFloat
     var useAlternatingSpacing: Bool = false
     var baseSpacing: CGFloat
 
     init(columns: Int) {
         self.gridColumns = columns
-        self.baseSpacing = 15 + ((8 - CGFloat(gridColumns)) * 10)
+        self.baseSpacing = 10 + ((8 - CGFloat(gridColumns)) * 8)
         self.baseHeight = 2
-        self.cellSize = 30
+        self.cellSize = CGSize(width: 30, height: 25)
         super.init()
         setupLayout()
     }
@@ -23,20 +23,20 @@ class CustomGridLayout: UICollectionViewFlowLayout {
 
     private func setupLayout() {
         let spacenum = CGFloat(gridColumns) - 1
-        let totalCellWidth = (cellSize * CGFloat(gridColumns)) + (baseSpacing * spacenum)
-        let dynamicSpacing = calculateDynamicSpacingOdd(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize)
+        let totalCellWidth = (CGFloat(cellSize.width) * CGFloat(gridColumns)) + (baseSpacing * spacenum)
+        let dynamicSpacing = calculateDynamicSpacingOdd(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize.width)
 
         self.minimumInteritemSpacing = dynamicSpacing
         self.minimumLineSpacing = baseHeight
-        self.itemSize = CGSize(width: cellSize, height: cellSize)
+        self.itemSize = CGSize(width: cellSize.width, height: cellSize.height)
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)?.map { $0.copy() as! UICollectionViewLayoutAttributes }
         
-        let totalCellWidth = (cellSize * CGFloat(gridColumns)) + (baseSpacing * (CGFloat(gridColumns) - 1))
+        let totalCellWidth = (cellSize.width * CGFloat(gridColumns)) + (baseSpacing * (CGFloat(gridColumns) - 1))
         // Calculate dynamic spacing based on the current state of the collection view
-        let dynamicSpacingEven = calculateDynamicSpacingEven(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize)
+        let dynamicSpacingEven = calculateDynamicSpacingEven(totalWidth: totalCellWidth, columns: gridColumns, cellsize: cellSize.width)
         
             if gridColumns % 2 == 0 && useAlternatingSpacing {
                 var xOffset: CGFloat = 0
